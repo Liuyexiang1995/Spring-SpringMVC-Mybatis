@@ -1,0 +1,55 @@
+<div class="jqGrid_wrapper">
+    <table id="_$gridId"></table>
+    <div id="_${gridId}_pager"></div>
+</div>
+ 
+ 
+ <script>
+        $(document).ready(function() {
+            var noOfRecords= "10";
+            
+			#if($needCheckbox==true)
+		    needMultiSelect=true;
+		    #end
+    
+            #if(!$noOfRecords.isEmpty())
+               noOfRecords = $noOfRecords;
+            #end 
+        
+			jQuery.jgrid.defaults.styleUI = "Bootstrap";
+			$("#_$gridId").jqGrid({
+				datatype: "json",
+				url: '${reurl}',
+				multiselect: $needCheckbox,
+				#if(!$height)
+				   height: 350,
+				#else
+				   height: $height,
+				#end   
+				autowidth: true,
+				rowNum: noOfRecords,
+				rowList: [10, 20, 30],
+				colNames:$columnNames,
+				colModel :[
+	                #foreach($fieldName in $fieldNameList) {
+	                        name: '$fieldName.index',
+	                        index: '$fieldName.index',
+	                        width: $fieldName.width,
+	                        align: '$fieldName.textAlign',
+	                        hidden: $fieldName.isHidden
+	                        #if($fieldName.onRenderEvent != '')
+					 		  ,formatter: $fieldName.onRenderEvent
+					 	    #end
+	                    },
+	                #end
+                ],
+				pager: '#_${gridId}_pager',
+				hidegrid: false,
+				viewrecords: true,
+                shrinkToFit: true,
+                scrollrows : true,
+                gridview: true,
+
+            });
+		});
+</script>

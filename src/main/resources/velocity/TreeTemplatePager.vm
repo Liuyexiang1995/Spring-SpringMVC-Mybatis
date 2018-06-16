@@ -1,0 +1,47 @@
+<div id="_$treeId"></div>
+
+<script>
+    $(document).ready(function () {
+        $("#_$treeId").jstree({
+            "core": {
+
+                #if($multiple)
+                    "multiple": true,
+                #else
+                    "multiple": false,
+                #end
+
+                "data": {
+                    "url": function (node) {
+                        if (node.id == '#') {
+                            return "${loadUrl}";
+                        }
+                        #if(${hasChild})
+                            return "${loadUrl}currentNode=" + node.id;
+                        #end
+                    },
+                    "data": function (node) {
+                        return {'id': node.id};
+                    },
+                    "dataType": "json",
+                    "type": "get",
+                    "cache": false,
+                }
+            },
+            #if($checkbox)
+                "checkbox": {
+                    "keep_selected_style": false
+                },
+                "plugins": ["status", "massload", "types", "wholerow", "checkbox"],
+            #else
+                "plugins": ["status", "massload", "types", "wholerow"],
+            #end
+
+            "types": {
+                "default": {
+                    "icon": "fa fa-folder"
+                }
+            }
+        });
+    });
+</script>
